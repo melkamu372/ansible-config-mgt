@@ -1,14 +1,15 @@
 ---
 - name: update web, nfs and db servers
-  hosts: webservers, nfs, db
+  hosts: webservers, nfs, lb
   remote_user: ec2-user
   become: yes
   become_user: root
   tasks:
-  - name: delete wireshark
-    yum:
-      name: wireshark
-      state: removed
+    - name: delete wireshark on CentOS/RHEL
+      yum:
+        name: wireshark
+        state: removed
+      when: ansible_facts['os_family'] == 'RedHat'
 
 - name: update LB server
   hosts: lb
@@ -16,10 +17,11 @@
   become: yes
   become_user: root
   tasks:
-  - name: delete wireshark
-    apt:
-      name: wireshark-qt
-      state: absent
-      autoremove: yes
-      purge: yes
-      autoclean: yes
+    - name: delete wireshark on Ubuntu
+      apt:
+        name: wireshark-qt
+        state: absent
+        autoremove: yes
+        purge: yes
+        autoclean: yes
+
