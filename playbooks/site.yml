@@ -1,13 +1,13 @@
 ---
-- hosts: all
-  tasks:
-    - name: Include dynamic variables
-      include_vars:
-        file: ../dynamic-assignments/env-vars.yml
-      tags:
-        - always
+# - hosts: all
+#   tasks:
+#     - name: Include dynamic variables
+#       include_vars:
+#         file: ../dynamic-assignments/env-vars.yml
+#       tags:
+#         - always
 
-- hosts: webservers
+- hosts: tooling
   tasks:
     - name: Webserver assignment
       import_playbook: ../static-assignments/webservers.yml
