@@ -1,5 +1,5 @@
 ---
 - hosts: db
   roles:
-     - Apache
+     - mysql
   become: true
