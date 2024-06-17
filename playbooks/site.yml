@@ -1,23 +1,20 @@
 ---
-# - hosts: all
-#   tasks:
-#     - name: Include dynamic variables
-#       include_vars:
-#         file: ../dynamic-assignments/env-vars.yml
-#       tags:
-#         - always
 
-- hosts: tooling
+- name: Include dynamic variables
+  hosts: all
   tasks:
-    - name: Webserver assignment
-      import_playbook: ../static-assignments/webservers.yml
+    - include_vars: "../dynamic-assignments/env-vars.yml"
+  tags:
+    - always
 
-- hosts: nginx
-  tasks:
-    - name: Nginx assignment
-      import_playbook: ../static-assignments/nginx.yml
+- name: Webserver assignment
+  hosts: webservers
+  import_playbook: "../static-assignments/webservers.yml"
 
-- hosts: db
-  tasks:
-    - name: MySQL assignment
-      import_playbook: ../static-assignments/mysql.yml
+- name: Nginx assignment
+  hosts: nginx
+  import_playbook: "../static-assignments/nginx.yml"
+
+- name: MySQL assignment
+  hosts: mysql
+  import_playbook: "../static-assignments/mysql.yml"
