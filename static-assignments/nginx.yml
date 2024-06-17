@@ -1,5 +1,5 @@
 ---
 - hosts: nginx
   roles:
-     - Nginx
+     - nginx
   become: true
