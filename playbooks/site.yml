@@ -6,4 +6,4 @@
   import_playbook: ../static-assignments/nginx.yml
 
 - name: db
-  import_playbook: ../static-assignments/mysql.yml
+  import_playbook: ../static-assignments/database.yml
