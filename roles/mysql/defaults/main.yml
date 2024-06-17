@@ -2,13 +2,13 @@
 # Set this to the user ansible is logging in as - should have root
 # or sudo access
 mysql_user_home: /root
-mysql_user_name: melkamu
-mysql_user_password: PassWord.1
+mysql_user_name: root
+mysql_user_password: root
 
 # The default root user installed by mysql - almost always root
 mysql_root_home: /root
-mysql_root_username: melkamu
-mysql_root_password: PassWord.1
+mysql_root_username: root
+mysql_root_password: root
 
 # Set this to `true` to forcibly update the root password.
 mysql_root_password_update: false
@@ -106,18 +106,34 @@ mysql_config_include_files: []
 #  - { src: path/relative/to/playbook/anotherfile.cnf, force: yes }
 
 # Databases.
-mysql_databases: []
-#   - name: example
-#     collation: utf8_general_ci
-#     encoding: utf8
-#     replicate: 1
+mysql_databases:
+  - name: tooling
+    collation: utf8_general_ci
+    encoding: utf8
+    replicate: 1
+
+# Databases Todo.
+mysql_databases:
+  - name: homestead
+    collation: utf8_general_ci
+    encoding: utf8
+    replicate: 1
+
+    # Users.
+mysql_users:
+   - name: homestead
+     host: 172.31.80.79
+     password: sePret^i
+     priv: '*.*:ALL,GRANT'
 
 # Users.
-mysql_users: []
-#   - name: example
-#     host: 127.0.0.1
-#     password: secret
-#     priv: *.*:USAGE
+mysql_users:
+   - name: admin
+     host: 0.0.0.0
+     password: password
+     priv: '*.*:ALL,GRANT'
+
+
 
 mysql_disable_log_bin: false
 
@@ -128,9 +144,5 @@ mysql_binlog_format: "ROW"
 mysql_expire_logs_days: "10"
 mysql_replication_role: ''
 mysql_replication_master: ''
-mysql_replication_master_inventory_host: "{{ mysql_replication_master }}"
-
 # Same keys as `mysql_users` above.
 mysql_replication_user: []
-
-mysql_hide_passwords: false
