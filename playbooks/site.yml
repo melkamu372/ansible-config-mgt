@@ -1,9 +1,12 @@
 # ---
-- name: tooling
-  import_playbook: ../static-assignments/webservers.yml
+# - name: tooling
+#   import_playbook: ../static-assignments/webservers.yml
 
-- name: nginx
-  import_playbook: ../static-assignments/nginx.yml
+# - name: nginx
+#   import_playbook: ../static-assignments/nginx.yml
 
-- name: db
-  import_playbook: ../static-assignments/database.yml
+# - name: db
+#   import_playbook: ../static-assignments/database.yml
+
+- name: artifactory
+  import_playbook: ../static-assignments/artifactory.yml
