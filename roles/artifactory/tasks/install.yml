@@ -42,6 +42,14 @@
     shell: /bin/bash
     state: present
 
+- name: Create the jfrog directory
+  become: true
+  ansible.builtin.file:
+    path: /opt/jfrog
+    state: directory
+    owner: "{{ artifactory_user }}"
+    group: "{{ artifactory_group }}"
+
 - name: Allow using crontab
   ansible.builtin.lineinfile:
     path: /etc/cron.allow
