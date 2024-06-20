@@ -106,34 +106,18 @@ mysql_config_include_files: []
 #  - { src: path/relative/to/playbook/anotherfile.cnf, force: yes }
 
 # Databases.
-mysql_databases:
-  - name: tooling
-    collation: utf8_general_ci
-    encoding: utf8
-    replicate: 1
-
-# Databases Todo.
-mysql_databases:
-  - name: homestead
-    collation: utf8_general_ci
-    encoding: utf8
-    replicate: 1
-
-    # Users.
-mysql_users:
-   - name: homestead
-     host: 172.31.80.79
-     password: sePret^i
-     priv: '*.*:ALL,GRANT'
+mysql_databases: []
+#   - name: example
+#     collation: utf8_general_ci
+#     encoding: utf8
+#     replicate: 1
 
 # Users.
-mysql_users:
-   - name: admin
-     host: 0.0.0.0
-     password: password
-     priv: '*.*:ALL,GRANT'
-
-
+mysql_users: []
+#   - name: example
+#     host: 127.0.0.1
+#     password: secret
+#     priv: *.*:USAGE
 
 mysql_disable_log_bin: false
 
@@ -144,5 +128,9 @@ mysql_binlog_format: "ROW"
 mysql_expire_logs_days: "10"
 mysql_replication_role: ''
 mysql_replication_master: ''
+mysql_replication_master_inventory_host: "{{ mysql_replication_master }}"
+
 # Same keys as `mysql_users` above.
 mysql_replication_user: []
+
+mysql_hide_passwords: false
