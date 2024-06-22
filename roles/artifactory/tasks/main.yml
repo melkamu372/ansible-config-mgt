@@ -20,7 +20,7 @@
     dest: ~/.bash_profile
 
 - name: reload the .bash_profile
-  ansible.builtin.shell: source ~/.bash_profile
+  ansible.builtin.shell: . ~/.bash_profile
   args:
     executable: /bin/bash
 
