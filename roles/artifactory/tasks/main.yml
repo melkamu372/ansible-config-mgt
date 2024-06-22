@@ -16,7 +16,7 @@
 
 - name: Configuring java path
   ansible.builtin.template:
-    src: templates/bash-profile.j2
+    src: bash-profile.j2
     dest: ~/.bash_profile
 
 - name: reload the .bash_profile
