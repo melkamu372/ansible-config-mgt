@@ -10,10 +10,14 @@
     state: present
     update_cache: yes
 
-- name: Download and add JFrog GPG key
-  ansible.builtin.command: wget -qO - https://api.bintray.com/orgs/jfrog/keys/gpg/public.key | apt-key add -
+- name: Download JFrog GPG key
+  ansible.builtin.command: wget -qO - https://api.bintray.com/orgs/jfrog/keys/gpg/public.key
+  register: gpg_key
+
+- name: Add JFrog GPG key
+  ansible.builtin.command: apt-key add -
   args:
-    warn: false
+    stdin: "{{ gpg_key.stdout }}"
 
 - name: Add the JFrog Artifactory repository
   ansible.builtin.apt_repository:
