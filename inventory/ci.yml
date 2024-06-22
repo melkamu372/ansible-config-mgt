@@ -1,2 +1,2 @@
 [artifactory]
-172.31.22.203 ansible_ssh_user='ubuntu' artifactory_enabled=true artifactory_upgrade_only=false
+172.31.90.230 ansible_ssh_user='ubuntu'
