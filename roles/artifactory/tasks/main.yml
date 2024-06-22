@@ -1,4 +1,4 @@
-# tasks file for artifactory on Ubuntu
+# tasks file for artifactory on Ubuntu 24.04
 
 - name: install java 11
   ansible.builtin.apt:
@@ -11,6 +11,7 @@
     name: 
       - wget
       - unzip
+      - gnupg2
     state: present
     update_cache: yes
 
@@ -24,16 +25,15 @@
   args:
     executable: /bin/bash
 
-- name: add the repository key to repos list
-  ansible.builtin.get_url:
-    url: https://releases.jfrog.io/artifactory/artifactory-debs/pool/jfrog-artifactory-debs.repo
-    dest: /etc/apt/sources.list.d/jfrog-artifactory.list
-    mode: '0755'
+- name: download and add JFrog GPG key
+  ansible.builtin.command: wget -qO - https://api.bintray.com/orgs/jfrog/keys/gpg/public.key | apt-key add -
+  register: add_jfrog_gpg_key
+  changed_when: add_jfrog_gpg_key.rc == 0
 
-- name: add JFrog GPG key
-  ansible.builtin.apt_key:
-    url: https://releases.jfrog.io/artifactory/api/gpg/key/public
-    state: present
+- name: add the JFrog Artifactory repository
+  ansible.builtin.command: echo "deb https://jfrog.bintray.com/artifactory-debs bionic main" | tee /etc/apt/sources.list.d/jfrog.list
+  register: add_jfrog_repo
+  changed_when: add_jfrog_repo.rc == 0
 
 - name: update cache
   ansible.builtin.apt:
