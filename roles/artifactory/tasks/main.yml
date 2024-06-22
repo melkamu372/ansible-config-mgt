@@ -1,74 +1,51 @@
----
-- name: Install JFrog Artifactory and Configure Nginx
-  hosts: all
-  become: yes
-  tasks:
-    - name: Install required packages (gnupg2 and nginx)
-      apt:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - gnupg2
-        - nginx
-      tags: 
-        - packages
+# tasks file for artifactory on Ubuntu
 
-    - name: Add JFrog Artifactory repository GPG key
-      apt_key:
-        url: https://api.bintray.com/orgs/jfrog/keys/gpg/public.key
-        state: present
-      tags: 
-        - artifactory
+- name: install java 11
+  ansible.builtin.apt:
+    name: openjdk-11-jdk
+    state: present
+    update_cache: yes
 
-    - name: Add JFrog Artifactory repository
-      apt_repository:
-        repo: deb https://jfrog.bintray.com/artifactory-debs bionic main
-        state: present
-      tags: 
-        - artifactory
+- name: install wget and unzip
+  ansible.builtin.apt:
+    name: 
+      - wget
+      - unzip
+    state: present
+    update_cache: yes
 
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-      tags: 
-        - artifactory
+- name: Configuring java path
+  ansible.builtin.template:
+    src: templates/bash-profile.j2
+    dest: ~/.bash_profile
 
-    - name: Install JFrog Artifactory OSS
-      apt:
-        name: jfrog-artifactory-oss
-        state: present
-      tags: 
-        - artifactory
+- name: reload the .bash_profile
+  ansible.builtin.shell: source ~/.bash_profile
+  args:
+    executable: /bin/bash
 
-    - name: Start and enable Artifactory service
-      systemd:
-        name: artifactory
-        state: started
-        enabled: yes
-      tags: 
-        - artifactory
+- name: add the repository key to repos list
+  ansible.builtin.get_url:
+    url: https://releases.jfrog.io/artifactory/artifactory-debs/pool/jfrog-artifactory-debs.repo
+    dest: /etc/apt/sources.list.d/jfrog-artifactory.list
+    mode: '0755'
 
-    - name: Configure Nginx as a reverse proxy for JFrog Artifactory
-      template:
-        src: jfrog.conf.j2
-        dest: /etc/nginx/sites-available/jfrog.conf
-      notify:
-        - reload nginx
-      tags: 
-        - nginx
+- name: add JFrog GPG key
+  ansible.builtin.apt_key:
+    url: https://releases.jfrog.io/artifactory/api/gpg/key/public
+    state: present
 
-    - name: Ensure Nginx site is enabled
-      file:
-        src: /etc/nginx/sites-available/jfrog.conf
-        dest: /etc/nginx/sites-enabled/jfrog.conf
-        state: link
-      notify:
-        - reload nginx
-      tags: 
-        - nginx
+- name: update cache
+  ansible.builtin.apt:
+    update_cache: yes
 
-  handlers:
-    - name: reload nginx
-      service:
-        name: nginx
-        state: reloaded
+- name: install artifactory
+  ansible.builtin.apt:
+    name: jfrog-artifactory-oss
+    state: present
+
+- name: start and enable artifactory
+  ansible.builtin.service:
+    name: artifactory
+    state: started
+    enabled: yes
