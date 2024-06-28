@@ -1,7 +1,7 @@
-[nginx]
-172.31.22.203 ansible_ssh_user='ubuntu' 
+# [nginx]
+# 172.31.22.203 ansible_ssh_user='ubuntu' 
 
-[tooling]
+[db]
 172.31.26.78 ansible_ssh_user='ec2-user' 
 
 # [db]

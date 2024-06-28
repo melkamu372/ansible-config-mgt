@@ -5,8 +5,8 @@
 # - name: nginx
 #   import_playbook: ../static-assignments/nginx.yml
 
-# - name: db
-#   import_playbook: ../static-assignments/database.yml
+- name: db
+  import_playbook: ../static-assignments/database.yml
 
-- name: artifactory
-  import_playbook: ../static-assignments/artifactory.yml
+# - name: artifactory
+#   import_playbook: ../static-assignments/artifactory.yml
