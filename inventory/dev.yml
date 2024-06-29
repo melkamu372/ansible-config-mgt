@@ -4,5 +4,5 @@
 [db]
 172.31.26.78 ansible_ssh_user='ec2-user' 
 
-# [db]
+# [tooling]
 # 172.31.16.232 ansible_ssh_user='ec2-user' 
