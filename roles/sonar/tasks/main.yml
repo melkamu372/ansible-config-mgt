@@ -18,19 +18,9 @@
     create: yes
 
 
-- name: Add the repository key for PostgreSQL
-  ansible.builtin.apt_key:
-    url: 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
-    state: present
-
 - name: Add ppa repository for Java
   ansible.builtin.apt_repository:
     repo: 'deb http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main'
-    state: present
-
-- name: Add PostgreSQL repository
-  ansible.builtin.apt_repository:
-    repo: 'deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main'
     state: present
 
 - name: Update apt package cache
@@ -70,8 +60,6 @@
     state: present
 
 - import_tasks: postgresql.yml
-  vars:
-    ansible_python_interpreter: /opt/sonar_venv/bin/python
 
 - name: Ensure group sonar exists
   ansible.builtin.group:
@@ -79,8 +67,6 @@
     state: present
 
 - import_tasks: sonarqube-setup.yml
-  vars:
-    ansible_python_interpreter: /opt/sonar_venv/bin/python
 
 - name: start and enable sonarqube
   ansible.builtin.service:
