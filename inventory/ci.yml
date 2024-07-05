@@ -3,4 +3,4 @@
 
 
 [sonarqube]
-172.31.26.18 ansible_ssh_user='ubuntu'
+172.31.87.164 ansible_ssh_user='ubuntu'
