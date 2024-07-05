@@ -20,9 +20,12 @@
 
 - name: Add ppa  repository 
   ansible.builtin.apt_repository:
-    repo: ppa:linuxuprising/java
+    repo: 'deb http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main'
 
-
+- name: Update apt package cache
+  ansible.builtin.apt:
+    update_cache: yes
+    
 - name: install python3
   ansible.builtin.apt:
     name: 
