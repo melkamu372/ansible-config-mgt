@@ -18,9 +18,19 @@
     create: yes
 
 
-- name: Add ppa repository
+- name: Add the repository key for PostgreSQL
+  ansible.builtin.apt_key:
+    url: 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
+    state: present
+
+- name: Add ppa repository for Java
   ansible.builtin.apt_repository:
     repo: 'deb http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main'
+    state: present
+
+- name: Add PostgreSQL repository
+  ansible.builtin.apt_repository:
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main'
     state: present
 
 - name: Update apt package cache
