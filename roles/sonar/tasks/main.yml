@@ -1,5 +1,7 @@
 ---
+
 # tasks file for sonarqube
+
 - name: set max_map
   become: true
   command: sysctl -w vm.max_map_count=262144
@@ -8,7 +10,6 @@
   become: true
   command: sysctl -w fs.file-max=65536
 
- 
 - name: Add max limits
   ansible.builtin.lineinfile:
     path: /etc/security/limits.conf
@@ -17,10 +18,15 @@
       - sonarqube   -   nproc    4096
     create: yes
 
+- name: Add the repository key
+  ansible.builtin.apt_key:
+    url: 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xEB9BFFBDEE6D7338'
+    state: present
 
-- name: Add ppa  repository 
+- name: Add ppa repository
   ansible.builtin.apt_repository:
     repo: 'deb http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main'
+    state: present
 
 - name: Update apt package cache
   ansible.builtin.apt:
@@ -57,10 +63,10 @@
       - openjdk-11-jdk
       - openjdk-11-jre
     state: present
-    allow_unauthenticated: yes
-
 
 - import_tasks: postgresql.yml
+  vars:
+    ansible_python_interpreter: /opt/sonar_venv/bin/python
 
 - name: Ensure group sonar exists
   ansible.builtin.group:
@@ -68,6 +74,8 @@
     state: present
 
 - import_tasks: sonarqube-setup.yml
+  vars:
+    ansible_python_interpreter: /opt/sonar_venv/bin/python
 
 - name: start and enable sonarqube
   ansible.builtin.service:
