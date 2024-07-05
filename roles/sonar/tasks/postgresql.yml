@@ -1,8 +1,4 @@
 ---
-- name: Remove existing pgdg.list if it exists
-  ansible.builtin.file:
-    path: /etc/apt/sources.list.d/pgdg.list
-    state: absent
 - name: add PostgreSQL repo to the repo list
   ansible.builtin.lineinfile:
     path: /etc/apt/sources.list.d/pgdg.list
